@@ -62,7 +62,7 @@ def coordinate_logiche(canvas, evento):
     stato = stati_canvas.get(canvas, {"scala": 1.0, "x": 0.0, "y": 0.0})
     return ((evento.x - stato["x"]) / stato["scala"], (evento.y - stato["y"]) / stato["scala"])
 
-# Riproduce l'effetto MP3 quando il giocatore segna (Windows MCI).
+# Riproduce audio quando il giocatore segna. Commit3 
 percorso_audio_gol = Path(__file__).with_name("Score a goal Sound effect  HD.mp3")
 _alias_audio_gol = "audio_gol"
 _mci = ctypes.windll.winmm.mciSendStringW
@@ -109,7 +109,7 @@ _alias_audio_gol_computer = "audio_gol_computer"
 _mci(f'open "{percorso_audio_gol_computer}" type mpegvideo alias {_alias_audio_gol_computer}', None, 0, None)
 
 def riproduci_audio_gol_computer():
-    # Riapre il file al momento del gol, così l'audio parte anche dopo altre clip.
+    # Riapre il gioco al gol, così l'audio riparte anche dopo.
     _mci(f"close {_alias_audio_gol_computer}", None, 0, None)
     codice = _mci(f'open "{percorso_audio_gol_computer}" alias {_alias_audio_gol_computer}', None, 0, None)
     if codice == 0:
@@ -123,14 +123,15 @@ def riproduci_audio_parata_computer():
     _mci(f"stop {_alias_audio_parata_computer}", None, 0, None)
     _mci(f"play {_alias_audio_parata_computer} from 0", None, 0, None)
 
+#Commit4 
 percorso_immagine = Path(__file__).with_name("Immagine 2 generata.png")
-with Image.open(percorso_immagine) as immagine_originale:
+with Image.open(percorso_immagine) as immagine_originale:   # Open Apre l’immagine, with invece chiude correttamente il file.
     immagine_adattata = ImageOps.fit(immagine_originale, (LARGHEZZA, ALTEZZA))
 immagine_iniziale = ImageTk.PhotoImage(immagine_adattata)
 
 schermata_iniziale = tk.Canvas(finestra, width=LARGHEZZA, height=ALTEZZA, highlightthickness=0, cursor="arrow")
-schermata_iniziale.place(x=0, y=0, relwidth=1, relheight=1)
-sfondo_iniziale_item = schermata_iniziale.create_image(0, 0, image=immagine_iniziale, anchor="nw")
+schermata_iniziale.place(x=0, y=0, relwidth=1, relheight=1) # Posiziona la finestra del gioco in alto a sinistra e lafa occupare tutta la finestra.
+sfondo_iniziale_item = schermata_iniziale.create_image(0, 0, image=immagine_iniziale, anchor="nw") #  mette l’immagine con nw partendo dall’angolo in alto a sinistra
 schermata_iniziale.create_text(390, 50, text="SOCCER PENALTY 6.7", fill="#D4AF37", font=("Ravie", 30))
 for dx in range(-2, 3):
     for dy in range(-2, 3):
