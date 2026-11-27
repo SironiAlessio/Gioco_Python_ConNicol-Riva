@@ -122,3 +122,18 @@ _mci(f'open "{percorso_audio_parata_computer}" type mpegvideo alias {_alias_audi
 def riproduci_audio_parata_computer():
     _mci(f"stop {_alias_audio_parata_computer}", None, 0, None)
     _mci(f"play {_alias_audio_parata_computer} from 0", None, 0, None)
+
+percorso_immagine = Path(__file__).with_name("Immagine 2 generata.png")
+with Image.open(percorso_immagine) as immagine_originale:
+    immagine_adattata = ImageOps.fit(immagine_originale, (LARGHEZZA, ALTEZZA))
+immagine_iniziale = ImageTk.PhotoImage(immagine_adattata)
+
+schermata_iniziale = tk.Canvas(finestra, width=LARGHEZZA, height=ALTEZZA, highlightthickness=0, cursor="arrow")
+schermata_iniziale.place(x=0, y=0, relwidth=1, relheight=1)
+sfondo_iniziale_item = schermata_iniziale.create_image(0, 0, image=immagine_iniziale, anchor="nw")
+schermata_iniziale.create_text(390, 50, text="SOCCER PENALTY 6.7", fill="#D4AF37", font=("Ravie", 30))
+for dx in range(-2, 3):
+    for dy in range(-2, 3):
+        if dx != 0 or dy != 0:
+            schermata_iniziale.create_text(600 + dx, 500 + dy, text="GIOCA", fill="black", font=("Ravie", 30), tags="gioca")
+schermata_iniziale.create_text(600, 500, text="GIOCA", fill="#D4AF37", font=("Ravie", 30), tags="gioca")
